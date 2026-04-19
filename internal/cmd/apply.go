@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/icebear/dbops/internal/config"
-	"github.com/icebear/dbops/internal/driver"
-	"github.com/icebear/dbops/internal/proposal"
+	"github.com/oriengy/dbops/internal/config"
+	"github.com/oriengy/dbops/internal/driver"
+	"github.com/oriengy/dbops/internal/proposal"
 )
 
 // Apply implements `dbops apply <id>`. Requires euid == 0 (sudo).

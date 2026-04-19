@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/icebear/dbops/internal/driver"
-	"github.com/icebear/dbops/internal/output"
+	"github.com/oriengy/dbops/internal/driver"
+	"github.com/oriengy/dbops/internal/output"
 )
 
 // Schema implements `dbops schema <db> [<table>]`.

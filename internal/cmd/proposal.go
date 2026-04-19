@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/icebear/dbops/internal/output"
-	"github.com/icebear/dbops/internal/proposal"
+	"github.com/oriengy/dbops/internal/output"
+	"github.com/oriengy/dbops/internal/proposal"
 )
 
 // Proposal implements `dbops proposal {list|show|reject}`.

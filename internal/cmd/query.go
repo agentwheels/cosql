@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/icebear/dbops/internal/output"
+	"github.com/oriengy/dbops/internal/output"
 )
 
 // Query implements `dbops query <db> ...`.

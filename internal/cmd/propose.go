@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/icebear/dbops/internal/driver"
-	"github.com/icebear/dbops/internal/proposal"
+	"github.com/oriengy/dbops/internal/driver"
+	"github.com/oriengy/dbops/internal/proposal"
 )
 
 // Propose implements `dbops propose <db> ...`.

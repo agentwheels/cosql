@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/icebear/dbops/internal/config"
+	"github.com/oriengy/dbops/internal/config"
 )
 
 // Driver is implemented per engine. Callers Open once, pass the *sql.DB to the

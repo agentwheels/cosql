@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/icebear/dbops/internal/config"
-	"github.com/icebear/dbops/internal/driver"
+	"github.com/oriengy/dbops/internal/config"
+	"github.com/oriengy/dbops/internal/driver"
 )
 
 // baseFlags are shared across subcommands.

@@ -14,7 +14,7 @@ if [ -x bin/dbops ]; then
 fi
 
 if ! command -v go >/dev/null 2>&1; then
-    echo "dbops plugin: Go 1.22+ is required to build the binary." >&2
+    echo "dbops plugin: Go 1.25+ is required to build the binary." >&2
     echo "             Install Go, then rm '$CLAUDE_PLUGIN_ROOT/bin/dbops' to retry." >&2
     exit 1
 fi

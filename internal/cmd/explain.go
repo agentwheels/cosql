@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/icebear/dbops/internal/output"
+	"github.com/oriengy/dbops/internal/output"
 )
 
 // Explain implements `dbops explain <db> ...`.

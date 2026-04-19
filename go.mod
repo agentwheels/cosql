@@ -1,4 +1,4 @@
-module github.com/icebear/dbops
+module github.com/oriengy/dbops
 
 go 1.25.0
 

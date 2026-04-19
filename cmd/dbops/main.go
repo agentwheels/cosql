@@ -11,7 +11,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/icebear/dbops/internal/cmd"
+	"github.com/oriengy/dbops/internal/cmd"
 )
 
 const usage = `dbops - database ops CLI for PostgreSQL and MySQL

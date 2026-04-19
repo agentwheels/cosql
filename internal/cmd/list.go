@@ -3,8 +3,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/icebear/dbops/internal/config"
-	"github.com/icebear/dbops/internal/output"
+	"github.com/oriengy/dbops/internal/config"
+	"github.com/oriengy/dbops/internal/output"
 )
 
 // List implements `dbops list`.

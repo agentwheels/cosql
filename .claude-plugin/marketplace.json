@@ -1,8 +1,7 @@
 {
   "name": "dbops",
   "owner": {
-    "name": "xumingyuan",
-    "email": "xumingyuan@msh.team"
+    "name": "xumingyuan"
   },
   "metadata": {
     "description": "Safe PostgreSQL/MySQL ops plugins for Claude Code.",
@@ -15,8 +14,7 @@
       "description": "Safe PostgreSQL/MySQL ops CLI: agents can read freely and propose writes, only sudo-elevated humans can apply them.",
       "version": "0.1.0",
       "author": {
-        "name": "xumingyuan",
-        "email": "xumingyuan@msh.team"
+        "name": "xumingyuan"
       },
       "keywords": ["postgres", "mysql", "database", "ops", "sudo", "write-proposal"],
       "category": "database"

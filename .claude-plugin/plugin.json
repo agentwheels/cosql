@@ -1,0 +1,22 @@
+{
+  "name": "dbops",
+  "version": "0.1.0",
+  "description": "Safe PostgreSQL/MySQL ops CLI: agents can read freely and propose writes, only sudo-elevated humans can apply them.",
+  "author": {
+    "name": "xumingyuan",
+    "email": "xumingyuan@msh.team"
+  },
+  "repository": "https://github.com/xumingyuan/pg-ops",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/install.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

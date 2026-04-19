@@ -8,20 +8,34 @@ Safe PostgreSQL / MySQL CLI for Claude Code agents.
   `sudo dbops apply <id>` actually executes it. The sudo password is the
   human-in-the-loop signal.
 
-## Install — for a Claude Code agent
+## Install — one-line prompt for any coding agent
 
-Paste this prompt into Claude Code:
+Works with any agent that can run shell commands and read a URL
+(Claude Code, Cursor, aider, Codex, Copilot CLI, Gemini CLI, …). Paste
+this verbatim:
 
-> Install the dbops Claude Code plugin:
-> ```
-> /plugin marketplace add oriengy/dbops
-> /plugin install dbops@dbops
-> ```
-> Then copy `examples/config.toml` to `~/.config/dbops/config.toml`
-> (`chmod 600`) and help me fill in the DSNs.
+> Set up the `dbops` CLI from https://github.com/oriengy/dbops.
+> (1) Install the binary: `go install github.com/oriengy/dbops/cmd/dbops@latest`
+> and make sure `$(go env GOPATH)/bin` is on my PATH.
+> (2) Fetch and read `skills/dbops/SKILL.md` and
+> `skills/dbops/references/write-ops.md` from the repo — they describe the
+> propose → sudo-apply workflow you MUST follow when I ask for database work.
+> (3) Bootstrap the config: copy `examples/config.toml` from the repo to
+> `~/.config/dbops/config.toml` with mode `0600`, then ask me for the DSNs
+> and edit the file. Don't proceed until `dbops list` shows the aliases I want.
 
-The plugin's `SessionStart` hook builds the binary on first use (needs
-Go 1.22+).
+Requires Go 1.22+ on PATH.
+
+## Install — Claude Code plugin (one step)
+
+```
+/plugin marketplace add oriengy/dbops
+/plugin install dbops@dbops
+```
+
+The `SessionStart` hook auto-builds the binary; then copy
+`examples/config.toml` to `~/.config/dbops/config.toml` (`chmod 600`)
+and fill in the DSNs.
 
 ## Install — manually
 

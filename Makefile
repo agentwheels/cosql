@@ -16,8 +16,8 @@ install: build install-skill
 
 install-skill:
 	mkdir -p $(SKILL_DIR)/references
-	cp skill/SKILL.md $(SKILL_DIR)/SKILL.md
-	cp skill/references/*.md $(SKILL_DIR)/references/
+	cp skills/dbops/SKILL.md $(SKILL_DIR)/SKILL.md
+	cp skills/dbops/references/*.md $(SKILL_DIR)/references/
 
 install-example-config:
 	mkdir -p $(CONFIG_DIR)

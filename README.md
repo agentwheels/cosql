@@ -2,7 +2,7 @@
 
 A small CLI for day-to-day PostgreSQL / MySQL operations, designed to be
 safely driven by a Claude Code agent via the companion Skill at
-`skill/SKILL.md`.
+`skills/dbops/SKILL.md`.
 
 ## Why
 

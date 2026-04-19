@@ -1,0 +1,30 @@
+# dbops config — save as ~/.config/dbops/config.toml with mode 0600.
+# Passwords are in plaintext here; protect the file with file permissions.
+#
+# default_db is used by commands that need a db alias and don't receive one
+# explicitly on the CLI (future use; current commands require an explicit <db>).
+default_db = "local_pg"
+
+[db.local_pg]
+driver = "postgres"
+dsn    = "postgres://user:pass@localhost:5432/app?sslmode=disable"
+notes  = "Local Postgres — development"
+
+[db.local_mysql]
+driver = "mysql"
+dsn    = "user:pass@tcp(127.0.0.1:3306)/app?parseTime=true&charset=utf8mb4"
+notes  = "Local MySQL — development"
+
+# Supported DSN formats:
+#   postgres: postgres://user:pass@host:port/dbname?param=value
+#             or libpq-style: host=... user=... dbname=... sslmode=...
+#   mysql:    user:pass@tcp(host:port)/dbname?param=value
+#             (see github.com/go-sql-driver/mysql for the full grammar)
+#
+# Multi-statement proposals:
+#   dbops executes proposal.sql as a single Exec call. Whether multiple
+#   statements in one proposal work therefore depends on the DSN:
+#     mysql:    append `multiStatements=true` to the DSN.
+#     postgres: append `prefer_simple_protocol=true` to the DSN.
+#   If you leave these off, split multi-statement changes into one
+#   proposal per statement.

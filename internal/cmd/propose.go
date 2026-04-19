@@ -21,7 +21,7 @@ func Propose(args []string) error {
 	fs.StringVar(&file, "f", "", "read SQL from file")
 	fs.StringVar(&note, "note", "", "human-readable justification")
 	fs.BoolVar(&noDryRun, "no-dry-run", false, "skip EXPLAIN dry-run (still validates config + driver)")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {

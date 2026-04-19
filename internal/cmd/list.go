@@ -12,7 +12,7 @@ func List(args []string) error {
 	fs := newFlagSet("list")
 	var bf baseFlags
 	bf.bind(fs)
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 

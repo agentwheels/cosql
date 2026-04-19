@@ -16,7 +16,7 @@ func Schema(args []string) error {
 	fs := newFlagSet("schema")
 	var bf baseFlags
 	bf.bind(fs)
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {

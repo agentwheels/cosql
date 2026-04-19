@@ -17,7 +17,7 @@ func Query(args []string) error {
 	var sqlFlag, file string
 	fs.StringVar(&sqlFlag, "sql", "", "inline SQL")
 	fs.StringVar(&file, "f", "", "read SQL from file")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {

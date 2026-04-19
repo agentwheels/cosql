@@ -34,7 +34,7 @@ func proposalList(args []string) error {
 	bf.bind(fs)
 	var status string
 	fs.StringVar(&status, "status", "", "filter by status (pending/applied/rejected/expired)")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if err := fixHomeForSudo(); err != nil {
@@ -60,7 +60,7 @@ func proposalShow(args []string) error {
 	fs := newFlagSet("proposal show")
 	var bf baseFlags
 	bf.bind(fs)
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {
@@ -87,7 +87,7 @@ func proposalShow(args []string) error {
 
 func proposalReject(args []string) error {
 	fs := newFlagSet("proposal reject")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {

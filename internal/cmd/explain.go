@@ -19,7 +19,7 @@ func Explain(args []string) error {
 	fs.StringVar(&sqlFlag, "sql", "", "inline SQL")
 	fs.StringVar(&file, "f", "", "read SQL from file")
 	fs.BoolVar(&analyze, "analyze", false, "run EXPLAIN ANALYZE (executes the query!)")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if fs.NArg() < 1 {

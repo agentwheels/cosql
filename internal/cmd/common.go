@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"strings"
 	"time"
 
 	"github.com/icebear/dbops/internal/config"
@@ -30,6 +31,57 @@ func newFlagSet(name string) *flag.FlagSet {
 	fs := flag.NewFlagSet(name, flag.ContinueOnError)
 	fs.SetOutput(os.Stderr)
 	return fs
+}
+
+// parseMixed calls fs.Parse but accepts flags and positional args in any
+// order, matching git/docker/kubectl conventions. Go's stdlib flag stops
+// parsing at the first non-flag token, which surprises users who write
+// `dbops query <db> --sql "..."` (flags after the positional).
+//
+// We preserve the original ordering of each bucket and hand the re-sorted
+// slice to fs.Parse so the rest of the code (fs.Args, fs.NArg, fs.Arg) keeps
+// seeing what it expects.
+func parseMixed(fs *flag.FlagSet, args []string) error {
+	var flags, positional []string
+	for i := 0; i < len(args); i++ {
+		a := args[i]
+		if a == "--" {
+			positional = append(positional, args[i+1:]...)
+			break
+		}
+		if len(a) < 2 || a[0] != '-' {
+			positional = append(positional, a)
+			continue
+		}
+		name := strings.TrimLeft(a, "-")
+		hasValue := false
+		if eq := strings.IndexByte(name, '='); eq >= 0 {
+			name = name[:eq]
+			hasValue = true
+		}
+		f := fs.Lookup(name)
+		if f == nil {
+			// Unknown flag: pass through so fs.Parse surfaces a clear error.
+			flags = append(flags, a)
+			continue
+		}
+		if hasValue {
+			flags = append(flags, a)
+			continue
+		}
+		if bf, ok := f.Value.(interface{ IsBoolFlag() bool }); ok && bf.IsBoolFlag() {
+			flags = append(flags, a)
+			continue
+		}
+		// Non-bool flag: consume the following token as its value.
+		if i+1 < len(args) {
+			flags = append(flags, a, args[i+1])
+			i++
+			continue
+		}
+		flags = append(flags, a)
+	}
+	return fs.Parse(append(flags, positional...))
 }
 
 // openDB loads config, resolves alias, pings the connection. The caller must

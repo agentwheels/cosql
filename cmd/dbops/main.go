@@ -27,7 +27,7 @@ Commands:
   proposal reject <id>               Mark a proposal rejected
   apply   <id>                       Apply a proposal (requires sudo)
 
-Flags (place AFTER the subcommand, e.g. 'dbops list --json'):
+Flags (may appear before or after positional args, e.g. 'dbops query mydb --sql ...'):
   --config PATH    Override config file (default: ~/.config/dbops/config.toml)
   --json           Emit JSON instead of text tables
 

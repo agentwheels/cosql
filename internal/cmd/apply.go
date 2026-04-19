@@ -21,7 +21,7 @@ func Apply(args []string) error {
 	bf.bind(fs)
 	var yes bool
 	fs.BoolVar(&yes, "yes", false, "skip the y/N prompt (still requires sudo)")
-	if err := fs.Parse(args); err != nil {
+	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
 	if os.Geteuid() != 0 {

@@ -6,7 +6,7 @@
     "name": "xumingyuan",
     "email": "xumingyuan@msh.team"
   },
-  "repository": "https://github.com/xumingyuan/pg-ops",
+  "repository": "https://github.com/oriengy/dbops",
   "hooks": {
     "SessionStart": [
       {

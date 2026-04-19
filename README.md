@@ -8,21 +8,12 @@ Safe PostgreSQL / MySQL CLI for Claude Code agents.
   `sudo dbops apply <id>` actually executes it. The sudo password is the
   human-in-the-loop signal.
 
-## Install — one-line prompt for any coding agent
+## Install — one-liner for any coding agent
 
-Works with any agent that can run shell commands and read a URL
-(Claude Code, Cursor, aider, Codex, Copilot CLI, Gemini CLI, …). Paste
-this verbatim:
+Paste into any agent that can run shell commands and fetch a URL
+(Cursor, aider, Codex, Copilot CLI, Gemini CLI, Claude Code, …):
 
-> Set up the `dbops` CLI from https://github.com/oriengy/dbops.
-> (1) Install the binary: `go install github.com/oriengy/dbops/cmd/dbops@latest`
-> and make sure `$(go env GOPATH)/bin` is on my PATH.
-> (2) Fetch and read `skills/dbops/SKILL.md` and
-> `skills/dbops/references/write-ops.md` from the repo — they describe the
-> propose → sudo-apply workflow you MUST follow when I ask for database work.
-> (3) Bootstrap the config: copy `examples/config.toml` from the repo to
-> `~/.config/dbops/config.toml` with mode `0600`, then ask me for the DSNs
-> and edit the file. Don't proceed until `dbops list` shows the aliases I want.
+> Install dbops per https://raw.githubusercontent.com/oriengy/dbops/main/INSTALL.md
 
 Requires Go 1.22+ on PATH.
 

@@ -118,7 +118,7 @@ func openDB(configPath, alias string) (*sql.DB, driver.Driver, config.Database, 
 // readSQL returns SQL from --sql or -f (mutually exclusive).
 func readSQL(sqlFlag, fileFlag string) (string, error) {
 	if sqlFlag != "" && fileFlag != "" {
-		return "", fmt.Errorf("--sql and -f are mutually exclusive")
+		return "", fmt.Errorf("--sql and -f are mutually exclusive; pick one")
 	}
 	if sqlFlag != "" {
 		return sqlFlag, nil
@@ -126,11 +126,11 @@ func readSQL(sqlFlag, fileFlag string) (string, error) {
 	if fileFlag != "" {
 		b, err := os.ReadFile(fileFlag)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("read -f %s: %w", fileFlag, err)
 		}
 		return string(b), nil
 	}
-	return "", fmt.Errorf("need --sql \"...\" or -f FILE")
+	return "", fmt.Errorf("no SQL given: pass --sql \"...\" or -f FILE")
 }
 
 // outputJSON writes v as indented JSON to stdout.

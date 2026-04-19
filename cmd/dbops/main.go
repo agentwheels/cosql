@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/icebear/dbops/internal/cmd"
 )
@@ -71,7 +72,13 @@ func main() {
 	}
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		msg := err.Error()
+		// "usage: ..." errors are self-explanatory; don't double-prefix.
+		if strings.HasPrefix(msg, "usage:") {
+			fmt.Fprintln(os.Stderr, msg)
+		} else {
+			fmt.Fprintf(os.Stderr, "error: %s\n", msg)
+		}
 		os.Exit(1)
 	}
 }

@@ -15,7 +15,8 @@ Paste into any agent that can run shell commands and fetch a URL
 
 > Install dbops per https://raw.githubusercontent.com/oriengy/dbops/main/INSTALL.md
 
-Requires Go 1.22+ on PATH.
+The linked doc downloads the right pre-built binary for the host — no
+Go toolchain needed. Go 1.22+ source build is offered as a fallback.
 
 ## Install — Claude Code plugin (one step)
 
@@ -24,18 +25,8 @@ Requires Go 1.22+ on PATH.
 /plugin install dbops@dbops
 ```
 
-The `SessionStart` hook auto-builds the binary; then copy
-`examples/config.toml` to `~/.config/dbops/config.toml` (`chmod 600`)
-and fill in the DSNs.
-
-## Install — manually
-
-```sh
-make install                       # builds + installs /usr/local/bin/dbops and the Skill
-make install-example-config        # copies examples/config.toml → ~/.config/dbops/config.toml
-chmod 600 ~/.config/dbops/config.toml
-$EDITOR   ~/.config/dbops/config.toml
-```
+The `SessionStart` hook auto-builds the binary; ask the agent to
+bootstrap the config.
 
 ## Usage
 

@@ -7,14 +7,28 @@ other raw client.
 
 ## 1. Install the binary
 
-Requires Go 1.22+ on PATH.
+Download the pre-built binary for this host and put it on PATH:
+
+```sh
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')
+curl -fsSL "https://github.com/oriengy/dbops/releases/latest/download/dbops-${OS}-${ARCH}" \
+  -o /tmp/dbops
+chmod +x /tmp/dbops
+sudo mv /tmp/dbops /usr/local/bin/dbops
+```
+
+If sudo isn't available, install to `~/.local/bin/dbops` instead and
+make sure that directory is on PATH.
+
+Fallback — build from source if you have Go 1.22+ and would rather not
+trust a pre-built binary:
 
 ```sh
 go install github.com/oriengy/dbops/cmd/dbops@latest
 ```
 
-Make sure `$(go env GOPATH)/bin` is on the user's PATH. If `dbops list`
-prints `command not found`, tell the user to add it.
+Verify with `dbops --help`.
 
 ## 2. Load the skill rules
 

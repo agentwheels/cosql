@@ -21,7 +21,7 @@ Paste this prompt into Claude Code:
 > (`chmod 600`) and help me fill in the DSNs.
 
 The plugin's `SessionStart` hook builds the binary on first use (needs
-Go 1.25+).
+Go 1.22+).
 
 ## Install — manually
 

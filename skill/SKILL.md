@@ -29,9 +29,12 @@ These commands need no approval. Use `--json` whenever you intend to parse
 the output.
 
 ```sh
-# Ad-hoc query (wrapped in a read-only transaction; writes are DB-rejected)
+# Ad-hoc query (wrapped in a read-only transaction; writes are DB-rejected).
+# SQL can come from --sql, a file, or stdin — pick whichever is cleanest.
 dbops query   <db> --sql "select ..."
 dbops query   <db> -f ./question.sql
+dbops query   <db> -f -                       # explicit stdin
+echo "select 1"   | dbops query <db>          # implicit stdin (same thing)
 
 # Schema browsing
 dbops schema  <db>                      # list schemas/tables with rough row counts
@@ -41,6 +44,9 @@ dbops schema  <db> public.users         # columns + indexes + foreign keys
 dbops explain <db> --sql "..."
 dbops explain <db> --sql "..." --analyze
 ```
+
+Flag order is flexible — `dbops query <db> --sql "..."` and
+`dbops query --sql "..." <db>` both work.
 
 If the user asks "show me X", start with `schema` (to confirm shape) then
 `query` (to pull data). For performance questions, go `explain` first.

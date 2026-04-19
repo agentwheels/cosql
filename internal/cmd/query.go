@@ -21,7 +21,7 @@ func Query(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops query <db> --sql "..." | -f FILE`)
+		return fmt.Errorf(`usage: dbops query <db> --sql "..." | -f FILE|- | (stdin)`)
 	}
 	alias := fs.Arg(0)
 

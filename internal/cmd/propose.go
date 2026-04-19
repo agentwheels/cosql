@@ -25,7 +25,7 @@ func Propose(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops propose <db> --sql "..." | -f FILE [--note "..."]`)
+		return fmt.Errorf(`usage: dbops propose <db> --sql "..." | -f FILE|- | (stdin) [--note "..."]`)
 	}
 	alias := fs.Arg(0)
 

@@ -18,10 +18,10 @@ const usage = `dbops - database ops CLI for PostgreSQL and MySQL
 
 Commands:
   list                               List configured databases
-  query   <db>   --sql ... | -f F    Run a read-only SQL query
+  query   <db>   [--sql ... | -f F]  Run a read-only SQL query
   schema  <db>   [<table>]           List schemas/tables or describe one table
-  explain <db>   --sql ... | -f F    Show query execution plan (read-only)
-  propose <db>   --sql ... | -f F    Create a write proposal (agents use this)
+  explain <db>   [--sql ... | -f F]  Show query execution plan (read-only)
+  propose <db>   [--sql ... | -f F]  Create a write proposal (agents use this)
                  [--note "..."]
   proposal list  [--status S]        List proposals
   proposal show  <id>                Show proposal details
@@ -36,6 +36,7 @@ Examples:
   dbops query local_pg --sql "select count(*) from users"
   dbops schema local_pg users
   dbops propose local_pg --sql "update users set active=false where id=7" --note "GDPR delete"
+  awk -f to-sql.awk data.csv | dbops propose local_pg --note "..."
   sudo dbops apply a1b2c3d4
 `
 

@@ -23,7 +23,7 @@ func Explain(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops explain <db> --sql "..." | -f FILE [--analyze]`)
+		return fmt.Errorf(`usage: dbops explain <db> --sql "..." | -f FILE|- | (stdin) [--analyze]`)
 	}
 	alias := fs.Arg(0)
 

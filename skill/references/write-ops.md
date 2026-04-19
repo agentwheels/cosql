@@ -43,6 +43,13 @@ Or from a file:
 dbops propose <db> -f ./migration.sql --note "adds idx_users_email; EXPLAIN estimates 120k rows scanned once"
 ```
 
+Or piped via stdin — handy when generating SQL with a script, which you
+should always prefer over hand-writing bulk `INSERT`/`UPDATE` rows:
+
+```sh
+awk -f to-sql.awk data.csv | dbops propose <db> --note "bulk import of N rows"
+```
+
 Output looks like:
 
 ```

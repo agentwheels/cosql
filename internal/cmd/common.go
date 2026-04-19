@@ -2,11 +2,13 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"os/user"
 	"strings"
@@ -115,13 +117,20 @@ func openDB(configPath, alias string) (*sql.DB, driver.Driver, config.Database, 
 	return db, drv, dbc, func() { db.Close() }, nil
 }
 
-// readSQL returns SQL from --sql or -f (mutually exclusive).
+// readSQL returns SQL from one of three sources, in precedence order:
+//   1. --sql "..."                   (inline)
+//   2. -f FILE   or   -f -           (file on disk, or "-" for stdin)
+//   3. stdin, when it's piped in and neither flag is set (implicit)
+// --sql and -f are mutually exclusive.
 func readSQL(sqlFlag, fileFlag string) (string, error) {
 	if sqlFlag != "" && fileFlag != "" {
 		return "", fmt.Errorf("--sql and -f are mutually exclusive; pick one")
 	}
 	if sqlFlag != "" {
 		return sqlFlag, nil
+	}
+	if fileFlag == "-" {
+		return readStdin("-f -")
 	}
 	if fileFlag != "" {
 		b, err := os.ReadFile(fileFlag)
@@ -130,7 +139,36 @@ func readSQL(sqlFlag, fileFlag string) (string, error) {
 		}
 		return string(b), nil
 	}
-	return "", fmt.Errorf("no SQL given: pass --sql \"...\" or -f FILE")
+	// Neither flag given. Only read stdin implicitly if it's piped — never
+	// when it's a terminal, to avoid hanging on a forgotten flag.
+	if !stdinIsTerminal() {
+		s, err := readStdin("stdin")
+		if err != nil {
+			return "", err
+		}
+		if len(bytes.TrimSpace([]byte(s))) > 0 {
+			return s, nil
+		}
+	}
+	return "", fmt.Errorf("no SQL given: pass --sql \"...\", -f FILE, or pipe via stdin")
+}
+
+func readStdin(label string) (string, error) {
+	b, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return "", fmt.Errorf("read %s: %w", label, err)
+	}
+	return string(b), nil
+}
+
+func stdinIsTerminal() bool {
+	fi, err := os.Stdin.Stat()
+	if err != nil {
+		// On error, treat as terminal — the safer default, since we won't
+		// block trying to read a pipe that doesn't exist.
+		return true
+	}
+	return (fi.Mode() & os.ModeCharDevice) != 0
 }
 
 // outputJSON writes v as indented JSON to stdout.

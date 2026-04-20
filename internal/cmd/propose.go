@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/oriengy/dbops/internal/driver"
-	"github.com/oriengy/dbops/internal/proposal"
+	"github.com/agentwheels/cosql/internal/driver"
+	"github.com/agentwheels/cosql/internal/proposal"
 )
 
-// Propose implements `dbops propose <db> ...`.
+// Propose implements `cosql propose <db> ...`.
 func Propose(args []string) error {
 	fs := newFlagSet("propose")
 	var bf baseFlags
@@ -25,7 +25,7 @@ func Propose(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops propose <db> --sql "..." | -f FILE|- | (stdin) [--note "..."]`)
+		return fmt.Errorf(`usage: cosql propose <db> --sql "..." | -f FILE|- | (stdin) [--note "..."]`)
 	}
 	alias := fs.Arg(0)
 
@@ -69,8 +69,8 @@ func Propose(args []string) error {
 	}
 
 	fmt.Printf("proposal %s created.\n", id)
-	fmt.Printf("next: run `sudo dbops apply %s` in a terminal you control.\n", id)
-	fmt.Printf("inspect: `dbops proposal show %s`\n", id)
+	fmt.Printf("next: run `sudo cosql apply %s` in a terminal you control.\n", id)
+	fmt.Printf("inspect: `cosql proposal show %s`\n", id)
 	return nil
 }
 

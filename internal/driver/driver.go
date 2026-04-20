@@ -1,4 +1,4 @@
-// Package driver abstracts the engine-specific bits of dbops: connection
+// Package driver abstracts the engine-specific bits of cosql: connection
 // opening, schema introspection, and EXPLAIN prefix. Query/exec themselves go
 // through database/sql directly.
 package driver
@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/oriengy/dbops/internal/config"
+	"github.com/agentwheels/cosql/internal/config"
 )
 
 // Driver is implemented per engine. Callers Open once, pass the *sql.DB to the

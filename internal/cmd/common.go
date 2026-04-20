@@ -1,4 +1,4 @@
-// Package cmd holds each `dbops <sub>` implementation.
+// Package cmd holds each `cosql <sub>` implementation.
 package cmd
 
 import (
@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/oriengy/dbops/internal/config"
-	"github.com/oriengy/dbops/internal/driver"
+	"github.com/agentwheels/cosql/internal/config"
+	"github.com/agentwheels/cosql/internal/driver"
 )
 
 // baseFlags are shared across subcommands.
@@ -25,7 +25,7 @@ type baseFlags struct {
 }
 
 func (b *baseFlags) bind(fs *flag.FlagSet) {
-	fs.StringVar(&b.ConfigPath, "config", "", "config file path (default ~/.config/dbops/config.toml)")
+	fs.StringVar(&b.ConfigPath, "config", "", "config file path (default ~/.config/cosql/config.toml)")
 	fs.BoolVar(&b.JSON, "json", false, "emit JSON output")
 }
 
@@ -38,7 +38,7 @@ func newFlagSet(name string) *flag.FlagSet {
 // parseMixed calls fs.Parse but accepts flags and positional args in any
 // order, matching git/docker/kubectl conventions. Go's stdlib flag stops
 // parsing at the first non-flag token, which surprises users who write
-// `dbops query <db> --sql "..."` (flags after the positional).
+// `cosql query <db> --sql "..."` (flags after the positional).
 //
 // We preserve the original ordering of each bucket and hand the re-sorted
 // slice to fs.Parse so the rest of the code (fs.Args, fs.NArg, fs.Arg) keeps

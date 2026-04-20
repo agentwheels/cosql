@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/oriengy/dbops/internal/output"
+	"github.com/agentwheels/cosql/internal/output"
 )
 
-// Query implements `dbops query <db> ...`.
+// Query implements `cosql query <db> ...`.
 func Query(args []string) error {
 	fs := newFlagSet("query")
 	var bf baseFlags
@@ -21,7 +21,7 @@ func Query(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops query <db> --sql "..." | -f FILE|- | (stdin)`)
+		return fmt.Errorf(`usage: cosql query <db> --sql "..." | -f FILE|- | (stdin)`)
 	}
 	alias := fs.Arg(0)
 

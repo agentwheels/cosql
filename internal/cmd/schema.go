@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/oriengy/dbops/internal/driver"
-	"github.com/oriengy/dbops/internal/output"
+	"github.com/agentwheels/cosql/internal/driver"
+	"github.com/agentwheels/cosql/internal/output"
 )
 
-// Schema implements `dbops schema <db> [<table>]`.
+// Schema implements `cosql schema <db> [<table>]`.
 func Schema(args []string) error {
 	fs := newFlagSet("schema")
 	var bf baseFlags
@@ -20,7 +20,7 @@ func Schema(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf("usage: dbops schema <db> [<table>]")
+		return fmt.Errorf("usage: cosql schema <db> [<table>]")
 	}
 	alias := fs.Arg(0)
 	var table string

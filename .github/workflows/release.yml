@@ -22,7 +22,7 @@ jobs:
             os="${target%%/*}"
             arch="${target##*/}"
             GOOS=$os GOARCH=$arch CGO_ENABLED=0 \
-              go build -ldflags "-s -w" -o dist/dbops-$os-$arch ./cmd/dbops
+              go build -ldflags "-s -w" -o dist/cosql-$os-$arch ./cmd/cosql
           done
       - name: Create release
         env:

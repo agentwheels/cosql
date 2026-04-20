@@ -6,14 +6,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/oriengy/dbops/internal/output"
-	"github.com/oriengy/dbops/internal/proposal"
+	"github.com/agentwheels/cosql/internal/output"
+	"github.com/agentwheels/cosql/internal/proposal"
 )
 
-// Proposal implements `dbops proposal {list|show|reject}`.
+// Proposal implements `cosql proposal {list|show|reject}`.
 func Proposal(args []string) error {
 	if len(args) == 0 {
-		return fmt.Errorf("usage: dbops proposal <list|show|reject> ...")
+		return fmt.Errorf("usage: cosql proposal <list|show|reject> ...")
 	}
 	sub, rest := args[0], args[1:]
 	switch sub {
@@ -64,7 +64,7 @@ func proposalShow(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf("usage: dbops proposal show <id>")
+		return fmt.Errorf("usage: cosql proposal show <id>")
 	}
 	if err := fixHomeForSudo(); err != nil {
 		return err
@@ -91,7 +91,7 @@ func proposalReject(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf("usage: dbops proposal reject <id>")
+		return fmt.Errorf("usage: cosql proposal reject <id>")
 	}
 	if err := fixHomeForSudo(); err != nil {
 		return err

@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/oriengy/dbops/internal/output"
+	"github.com/agentwheels/cosql/internal/output"
 )
 
-// Explain implements `dbops explain <db> ...`.
+// Explain implements `cosql explain <db> ...`.
 func Explain(args []string) error {
 	fs := newFlagSet("explain")
 	var bf baseFlags
@@ -23,7 +23,7 @@ func Explain(args []string) error {
 		return err
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf(`usage: dbops explain <db> --sql "..." | -f FILE|- | (stdin) [--analyze]`)
+		return fmt.Errorf(`usage: cosql explain <db> --sql "..." | -f FILE|- | (stdin) [--analyze]`)
 	}
 	alias := fs.Arg(0)
 

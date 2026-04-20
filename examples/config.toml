@@ -1,4 +1,4 @@
-# dbops config — save as ~/.config/dbops/config.toml with mode 0600.
+# cosql config — save as ~/.config/cosql/config.toml with mode 0600.
 # Passwords are in plaintext here; protect the file with file permissions.
 #
 # default_db is used by commands that need a db alias and don't receive one
@@ -22,7 +22,7 @@ notes  = "Local MySQL — development"
 #             (see github.com/go-sql-driver/mysql for the full grammar)
 #
 # Multi-statement proposals:
-#   dbops executes proposal.sql as a single Exec call. Whether multiple
+#   cosql executes proposal.sql as a single Exec call. Whether multiple
 #   statements in one proposal work therefore depends on the DSN:
 #     mysql:    append `multiStatements=true` to the DSN.
 #     postgres: append `prefer_simple_protocol=true` to the DSN.

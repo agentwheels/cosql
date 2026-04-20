@@ -1,7 +1,7 @@
-BIN        := dbops
+BIN        := cosql
 PREFIX     ?= /usr/local
-SKILL_DIR  ?= $(HOME)/.claude/skills/dbops
-CONFIG_DIR ?= $(HOME)/.config/dbops
+SKILL_DIR  ?= $(HOME)/.claude/skills/cosql
+CONFIG_DIR ?= $(HOME)/.config/cosql
 
 .PHONY: all build install install-skill install-example-config uninstall test tidy clean
 
@@ -9,15 +9,15 @@ all: build
 
 build:
 	mkdir -p bin
-	go build -o bin/$(BIN) ./cmd/dbops
+	go build -o bin/$(BIN) ./cmd/cosql
 
 install: build install-skill
 	install -m 0755 bin/$(BIN) $(PREFIX)/bin/$(BIN)
 
 install-skill:
 	mkdir -p $(SKILL_DIR)/references
-	cp skills/dbops/SKILL.md $(SKILL_DIR)/SKILL.md
-	cp skills/dbops/references/*.md $(SKILL_DIR)/references/
+	cp skills/cosql/SKILL.md $(SKILL_DIR)/SKILL.md
+	cp skills/cosql/references/*.md $(SKILL_DIR)/references/
 
 install-example-config:
 	mkdir -p $(CONFIG_DIR)

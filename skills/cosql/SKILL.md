@@ -1,12 +1,12 @@
 ---
-name: dbops
-description: Use the dbops CLI for all PostgreSQL/MySQL operations. Read paths run directly; write paths always go through propose → sudo apply.
+name: cosql
+description: Use the cosql CLI for all PostgreSQL/MySQL operations. Read paths run directly; write paths always go through propose → sudo apply.
 ---
 
-# dbops — safe database operations
+# cosql — safe database operations
 
 Any SQL you run against a Postgres or MySQL database on this machine MUST go
-through the `dbops` CLI. Never call `psql`, `mysql`, `mysqlcli`, or any
+through the `cosql` CLI. Never call `psql`, `mysql`, `mysqlcli`, or any
 other raw client directly.
 
 Why: the binary enforces a read-only transaction for queries, and splits
@@ -15,12 +15,12 @@ can do via `sudo`). Going around it breaks that invariant.
 
 ## Quick orientation
 
-Always start with `dbops list` if you don't already know what's configured.
+Always start with `cosql list` if you don't already know what's configured.
 Aliases in the output are the `<db>` argument for every other command.
 
 ```
-dbops list
-dbops list --json
+cosql list
+cosql list --json
 ```
 
 ## Read operations
@@ -31,22 +31,22 @@ the output.
 ```sh
 # Ad-hoc query (wrapped in a read-only transaction; writes are DB-rejected).
 # SQL can come from --sql, a file, or stdin — pick whichever is cleanest.
-dbops query   <db> --sql "select ..."
-dbops query   <db> -f ./question.sql
-dbops query   <db> -f -                       # explicit stdin
-echo "select 1"   | dbops query <db>          # implicit stdin (same thing)
+cosql query   <db> --sql "select ..."
+cosql query   <db> -f ./question.sql
+cosql query   <db> -f -                       # explicit stdin
+echo "select 1"   | cosql query <db>          # implicit stdin (same thing)
 
 # Schema browsing
-dbops schema  <db>                      # list schemas/tables with rough row counts
-dbops schema  <db> public.users         # columns + indexes + foreign keys
+cosql schema  <db>                      # list schemas/tables with rough row counts
+cosql schema  <db> public.users         # columns + indexes + foreign keys
 
 # EXPLAIN. --analyze executes the query and is still bounded by the read-only txn.
-dbops explain <db> --sql "..."
-dbops explain <db> --sql "..." --analyze
+cosql explain <db> --sql "..."
+cosql explain <db> --sql "..." --analyze
 ```
 
-Flag order is flexible — `dbops query <db> --sql "..."` and
-`dbops query --sql "..." <db>` both work.
+Flag order is flexible — `cosql query <db> --sql "..."` and
+`cosql query --sql "..." <db>` both work.
 
 If the user asks "show me X", start with `schema` (to confirm shape) then
 `query` (to pull data). For performance questions, go `explain` first.
@@ -56,9 +56,9 @@ If the user asks "show me X", start with `schema` (to confirm shape) then
 Any write (INSERT / UPDATE / DELETE / DDL) MUST go through:
 
 ```
-agent:   dbops propose <db> --sql "..." --note "..."
-human:   sudo dbops apply <id>
-agent:   dbops proposal show <id>    # verify
+agent:   cosql propose <db> --sql "..." --note "..."
+human:   sudo cosql apply <id>
+agent:   cosql proposal show <id>    # verify
 ```
 
 The detailed workflow — including row-counting before proposing, red
@@ -71,8 +71,8 @@ Load that reference before you propose anything.
 | Error | Fix |
 |---|---|
 | `config not found` | Tell the user to run `make install-example-config`. |
-| `config ... has permissions XXX; must be 0600` | Tell the user to run `chmod 600 ~/.config/dbops/config.toml`. |
-| `no such db alias: "foo"` | Run `dbops list`; ask the user to add the missing `[db.foo]` entry. |
+| `config ... has permissions XXX; must be 0600` | Tell the user to run `chmod 600 ~/.config/cosql/config.toml`. |
+| `no such db alias: "foo"` | Run `cosql list`; ask the user to add the missing `[db.foo]` entry. |
 | `connect <alias>: ...` | DSN is wrong or server is down. Don't retry blindly; show the error to the user. |
 | `cannot execute ... in a read-only transaction` | You used `query` for a write. Switch to `propose` (see [references/write-ops.md](references/write-ops.md)). |
 | `apply must run with sudo` | You tried to run apply yourself. Hand off to the user. |
@@ -98,7 +98,7 @@ Good:
 > Proposal `a1b2c3d4` is ready. Run this in a terminal you control:
 >
 > ```sh
-> sudo dbops apply a1b2c3d4
+> sudo cosql apply a1b2c3d4
 > ```
 >
 > I'll wait for the result.
@@ -109,7 +109,7 @@ Bad:
 
 For config edits, paste the final TOML block, not "add a flag":
 
-> Add this to `~/.config/dbops/config.toml`:
+> Add this to `~/.config/cosql/config.toml`:
 >
 > ```toml
 > [db.staging]
@@ -121,7 +121,7 @@ For config edits, paste the final TOML block, not "add a flag":
 For permission errors, paste the exact fix:
 
 > ```sh
-> chmod 600 ~/.config/dbops/config.toml
+> chmod 600 ~/.config/cosql/config.toml
 > ```
 
 Sequence multiple commands with short ordered labels, but keep every

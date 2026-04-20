@@ -1,4 +1,4 @@
-module github.com/oriengy/dbops
+module github.com/agentwheels/cosql
 
 go 1.22
 

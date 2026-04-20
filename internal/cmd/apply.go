@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/oriengy/dbops/internal/config"
-	"github.com/oriengy/dbops/internal/driver"
-	"github.com/oriengy/dbops/internal/proposal"
+	"github.com/agentwheels/cosql/internal/config"
+	"github.com/agentwheels/cosql/internal/driver"
+	"github.com/agentwheels/cosql/internal/proposal"
 )
 
-// Apply implements `dbops apply <id>`. Requires euid == 0 (sudo).
+// Apply implements `cosql apply <id>`. Requires euid == 0 (sudo).
 func Apply(args []string) error {
 	fs := newFlagSet("apply")
 	var bf baseFlags
@@ -25,10 +25,10 @@ func Apply(args []string) error {
 		return err
 	}
 	if os.Geteuid() != 0 {
-		return fmt.Errorf("apply must run with sudo: sudo dbops apply <id>")
+		return fmt.Errorf("apply must run with sudo: sudo cosql apply <id>")
 	}
 	if fs.NArg() < 1 {
-		return fmt.Errorf("usage: sudo dbops apply <id>")
+		return fmt.Errorf("usage: sudo cosql apply <id>")
 	}
 	id := fs.Arg(0)
 

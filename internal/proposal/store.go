@@ -1,5 +1,5 @@
 // Package proposal persists write proposals on disk. Agents create them;
-// humans apply them via `sudo dbops apply <id>`.
+// humans apply them via `sudo cosql apply <id>`.
 package proposal
 
 import (
@@ -60,16 +60,16 @@ type Result struct {
 // Store is the filesystem-backed proposal store.
 type Store struct{ Dir string }
 
-// DefaultDir returns ~/.local/share/dbops/proposals (or $XDG_DATA_HOME).
+// DefaultDir returns ~/.local/share/cosql/proposals (or $XDG_DATA_HOME).
 func DefaultDir() (string, error) {
 	if xdg := os.Getenv("XDG_DATA_HOME"); xdg != "" {
-		return filepath.Join(xdg, "dbops", "proposals"), nil
+		return filepath.Join(xdg, "cosql", "proposals"), nil
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".local", "share", "dbops", "proposals"), nil
+	return filepath.Join(home, ".local", "share", "cosql", "proposals"), nil
 }
 
 // Open returns a Store rooted at DefaultDir, creating the directory on demand.

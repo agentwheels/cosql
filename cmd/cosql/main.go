@@ -1,4 +1,4 @@
-// Command dbops is a thin CLI for day-to-day PostgreSQL/MySQL ops.
+// Command cosql is a thin CLI for day-to-day PostgreSQL/MySQL ops.
 //
 // Read paths (list, query, schema, explain) run unattended. Write paths are
 // split: any user can create a write *proposal*; only root (sudo) can apply
@@ -11,10 +11,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/oriengy/dbops/internal/cmd"
+	"github.com/agentwheels/cosql/internal/cmd"
 )
 
-const usage = `dbops - database ops CLI for PostgreSQL and MySQL
+const usage = `cosql - database ops CLI for PostgreSQL and MySQL
 
 Commands:
   list                               List configured databases
@@ -28,16 +28,16 @@ Commands:
   proposal reject <id>               Mark a proposal rejected
   apply   <id>                       Apply a proposal (requires sudo)
 
-Flags (may appear before or after positional args, e.g. 'dbops query mydb --sql ...'):
-  --config PATH    Override config file (default: ~/.config/dbops/config.toml)
+Flags (may appear before or after positional args, e.g. 'cosql query mydb --sql ...'):
+  --config PATH    Override config file (default: ~/.config/cosql/config.toml)
   --json           Emit JSON instead of text tables
 
 Examples:
-  dbops query local_pg --sql "select count(*) from users"
-  dbops schema local_pg users
-  dbops propose local_pg --sql "update users set active=false where id=7" --note "GDPR delete"
-  awk -f to-sql.awk data.csv | dbops propose local_pg --note "..."
-  sudo dbops apply a1b2c3d4
+  cosql query local_pg --sql "select count(*) from users"
+  cosql schema local_pg users
+  cosql propose local_pg --sql "update users set active=false where id=7" --note "GDPR delete"
+  awk -f to-sql.awk data.csv | cosql propose local_pg --note "..."
+  sudo cosql apply a1b2c3d4
 `
 
 func main() {

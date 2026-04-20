@@ -1,11 +1,11 @@
 {
-  "name": "dbops",
+  "name": "cosql",
   "version": "0.1.0",
   "description": "Safe PostgreSQL/MySQL ops CLI: agents can read freely and propose writes, only sudo-elevated humans can apply them.",
   "author": {
     "name": "xumingyuan"
   },
-  "repository": "https://github.com/oriengy/dbops",
+  "repository": "https://github.com/agentwheels/cosql",
   "hooks": {
     "SessionStart": [
       {

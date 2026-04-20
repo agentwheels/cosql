@@ -1,4 +1,4 @@
-// Package config loads and validates the dbops TOML config file.
+// Package config loads and validates the cosql TOML config file.
 package config
 
 import (
@@ -25,13 +25,13 @@ type Database struct {
 	Notes  string `toml:"notes"`
 }
 
-// DefaultPath returns ~/.config/dbops/config.toml.
+// DefaultPath returns ~/.config/cosql/config.toml.
 func DefaultPath() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".config", "dbops", "config.toml"), nil
+	return filepath.Join(home, ".config", "cosql", "config.toml"), nil
 }
 
 // Load reads and validates the config at path. An empty path resolves to

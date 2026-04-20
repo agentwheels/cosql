@@ -3,11 +3,11 @@ package cmd
 import (
 	"os"
 
-	"github.com/oriengy/dbops/internal/config"
-	"github.com/oriengy/dbops/internal/output"
+	"github.com/agentwheels/cosql/internal/config"
+	"github.com/agentwheels/cosql/internal/output"
 )
 
-// List implements `dbops list`.
+// List implements `cosql list`.
 func List(args []string) error {
 	fs := newFlagSet("list")
 	var bf baseFlags

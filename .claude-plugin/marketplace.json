@@ -1,5 +1,5 @@
 {
-  "name": "dbops",
+  "name": "cosql",
   "owner": {
     "name": "xumingyuan"
   },
@@ -9,7 +9,7 @@
   },
   "plugins": [
     {
-      "name": "dbops",
+      "name": "cosql",
       "source": "./",
       "description": "Safe PostgreSQL/MySQL ops CLI: agents can read freely and propose writes, only sudo-elevated humans can apply them.",
       "version": "0.1.0",

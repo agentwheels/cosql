@@ -13,7 +13,7 @@ Safe PostgreSQL / MySQL CLI for Claude Code agents.
 Paste into any agent that can run shell commands and fetch a URL
 (Cursor, aider, Codex, Copilot CLI, Gemini CLI, Claude Code, …):
 
-> Install dbops per https://raw.githubusercontent.com/oriengy/dbops/main/INSTALL.md
+> Install dbops following https://raw.githubusercontent.com/oriengy/dbops/main/INSTALL.md
 
 The linked doc downloads the right pre-built binary for the host — no
 Go toolchain needed. Go 1.22+ source build is offered as a fallback.

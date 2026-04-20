@@ -21,7 +21,7 @@ Go toolchain needed. Go 1.22+ source build is offered as a fallback.
 ## Install — Claude Code plugin (one step)
 
 ```
-/plugin marketplace add agentwheels/cosql
+/plugin marketplace add agentwheels/marketplace
 /plugin install cosql@agentwheels
 ```
 

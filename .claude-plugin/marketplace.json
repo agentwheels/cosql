@@ -1,10 +1,10 @@
 {
-  "name": "cosql",
+  "name": "agentwheels",
   "owner": {
     "name": "xumingyuan"
   },
   "metadata": {
-    "description": "Safe PostgreSQL/MySQL ops plugins for Claude Code.",
+    "description": "Training wheels for coding agents: safety-first CLIs they can drive end-to-end.",
     "version": "0.1.0"
   },
   "plugins": [

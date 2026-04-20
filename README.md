@@ -22,7 +22,7 @@ Go toolchain needed. Go 1.22+ source build is offered as a fallback.
 
 ```
 /plugin marketplace add agentwheels/cosql
-/plugin install cosql@cosql
+/plugin install cosql@agentwheels
 ```
 
 The `SessionStart` hook auto-builds the binary; ask the agent to

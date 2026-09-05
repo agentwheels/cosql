@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"context"
+	"database/sql"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -84,23 +85,12 @@ func Apply(args []string) error {
 
 	ctx := context.Background()
 	start := time.Now()
-	tx, err := db.BeginTx(ctx, nil)
+	res, err := executeProposal(ctx, db, p)
 	if err != nil {
+		finalize(store, p, 0, time.Since(start), err)
 		return err
 	}
-
-	res, err := tx.ExecContext(ctx, p.SQL)
-	if err != nil {
-		tx.Rollback()
-		finalize(store, p, 0, time.Since(start), err)
-		return fmt.Errorf("exec failed (rolled back): %w", err)
-	}
 	affected, _ := res.RowsAffected()
-
-	if err := tx.Commit(); err != nil {
-		finalize(store, p, 0, time.Since(start), err)
-		return fmt.Errorf("commit failed: %w", err)
-	}
 	dur := time.Since(start)
 
 	p.Status = proposal.StatusApplied
@@ -118,6 +108,33 @@ func Apply(args []string) error {
 	writeAudit(p, affected, dur, nil)
 	fmt.Printf("\napplied. affected=%d, duration=%s\n", affected, dur)
 	return nil
+}
+
+func executeProposal(ctx context.Context, db *sql.DB, p *proposal.Proposal) (sql.Result, error) {
+	if p.NoTransaction {
+		res, err := db.ExecContext(ctx, p.SQL)
+		if err != nil {
+			return nil, fmt.Errorf("exec failed without transaction; changes may have been applied, inspect before retrying: %w", err)
+		}
+		return res, nil
+	}
+
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+	res, err := tx.ExecContext(ctx, p.SQL)
+	if err != nil {
+		if rollbackErr := tx.Rollback(); rollbackErr != nil {
+			return nil, fmt.Errorf("exec failed: %w; rollback failed: %v", err, rollbackErr)
+		}
+		return nil, fmt.Errorf("exec failed (rolled back): %w", err)
+	}
+	if err := tx.Commit(); err != nil {
+		return nil, fmt.Errorf("commit failed: %w", err)
+	}
+	return res, nil
 }
 
 func finalize(store *proposal.Store, p *proposal.Proposal, affected int64, dur time.Duration, execErr error) {
@@ -171,10 +188,10 @@ func writeAudit(p *proposal.Proposal, affected int64, dur time.Duration, execErr
 	if execErr != nil {
 		status = "error:" + strings.ReplaceAll(execErr.Error(), "\n", " ")
 	}
-	fmt.Fprintf(f, "%s APPLY id=%s db=%s by=%s affected=%d dur=%dms %s\n",
+	fmt.Fprintf(f, "%s APPLY id=%s db=%s by=%s affected=%d dur=%dms no_transaction=%t %s\n",
 		time.Now().Format(time.RFC3339),
 		p.ID, p.DB, appliedBy(),
-		affected, dur.Milliseconds(),
+		affected, dur.Milliseconds(), p.NoTransaction,
 		status,
 	)
 	chownBack(path)

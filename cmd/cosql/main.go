@@ -22,7 +22,7 @@ Commands:
   schema  <db>   [<table>]           List schemas/tables or describe one table
   explain <db>   [--sql ... | -f F]  Show query execution plan (read-only)
   propose <db>   [--sql ... | -f F]  Create a write proposal (agents use this)
-                 [--note "..."]
+                 [--note "..."] [--no-transaction]
   proposal list  [--status S]        List proposals
   proposal show  <id>                Show proposal details
   proposal reject <id>               Mark a proposal rejected

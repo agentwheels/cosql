@@ -32,23 +32,24 @@ const (
 
 // Proposal is what gets written to disk as <id>.json.
 type Proposal struct {
-	ID        string  `json:"id"`
-	DB        string  `json:"db"`
-	Driver    string  `json:"driver"`
-	SQL       string  `json:"sql"`
-	Note      string  `json:"note,omitempty"`
-	CreatedAt string  `json:"created_at"`
-	CreatedBy string  `json:"created_by"`
-	DryRun    *DryRun `json:"dry_run,omitempty"`
-	Status    Status  `json:"status"`
-	AppliedAt string  `json:"applied_at,omitempty"`
-	AppliedBy string  `json:"applied_by,omitempty"`
-	Result    *Result `json:"result,omitempty"`
+	ID            string  `json:"id"`
+	DB            string  `json:"db"`
+	Driver        string  `json:"driver"`
+	SQL           string  `json:"sql"`
+	NoTransaction bool    `json:"no_transaction,omitempty"`
+	Note          string  `json:"note,omitempty"`
+	CreatedAt     string  `json:"created_at"`
+	CreatedBy     string  `json:"created_by"`
+	DryRun        *DryRun `json:"dry_run,omitempty"`
+	Status        Status  `json:"status"`
+	AppliedAt     string  `json:"applied_at,omitempty"`
+	AppliedBy     string  `json:"applied_by,omitempty"`
+	Result        *Result `json:"result,omitempty"`
 }
 
 type DryRun struct {
-	Explain      string `json:"explain,omitempty"`
-	AffectedEst  int64  `json:"affected_est,omitempty"`
+	Explain     string `json:"explain,omitempty"`
+	AffectedEst int64  `json:"affected_est,omitempty"`
 }
 
 type Result struct {

@@ -66,6 +66,8 @@ lines, DDL rollback rules, multi-statement handling, and the full
 handoff script — lives in **[references/write-ops.md](references/write-ops.md)**.
 Load that reference before you propose anything.
 
+Lindorm 等不支持事务的数据库可在 `propose` 时使用 `--no-transaction`；执行模式保存在 proposal 中，仍由人工执行 `sudo cosql apply`。此模式跳过 EXPLAIN，不验证 SQL；执行失败可能已有部分变更，cosql 不会回滚，需先核对实际结果再决定是否重试。不要将该选项用于绕过 `query` 或 `explain` 的只读保护。
+
 ## Troubleshooting quick table
 
 | Error | Fix |

@@ -115,6 +115,12 @@ Interpret the `status` field:
 
 ## Multi-statement SQL
 
+### 不支持事务的数据库
+
+对 Lindorm 等不支持事务的 MySQL 协议数据库，使用 `cosql propose <db> -f <file> --no-transaction --note "..."`。该参数会保存到 proposal，人工仍通过 `sudo cosql apply <id>` 审阅并执行。
+
+此模式跳过 EXPLAIN，不验证 SQL；`apply` 直接执行 SQL，不开启或回滚事务。执行失败时可能已有部分变更，必须核对数据库中的实际结果后再决定是否重试。每条 DDL 单独创建 proposal，不能把多语句整体回滚作为恢复方案。`query` 和 `explain` 不支持此参数，仍要求只读事务。
+
 A proposal is a single `Exec` call. Whether multiple statements in one
 proposal work depends on the DSN:
 

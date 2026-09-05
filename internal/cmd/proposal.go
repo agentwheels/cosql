@@ -120,6 +120,9 @@ func printProposal(w io.Writer, p *proposal.Proposal) {
 	fmt.Fprintf(w, "id          %s\n", p.ID)
 	fmt.Fprintf(w, "status      %s\n", p.Status)
 	fmt.Fprintf(w, "db          %s (%s)\n", p.DB, p.Driver)
+	if p.NoTransaction {
+		fmt.Fprintln(w, "mode        no transaction (cannot roll back; changes may be partially applied)")
+	}
 	fmt.Fprintf(w, "created     %s by %s\n", p.CreatedAt, p.CreatedBy)
 	if p.AppliedAt != "" {
 		fmt.Fprintf(w, "applied     %s by %s\n", p.AppliedAt, p.AppliedBy)

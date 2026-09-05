@@ -16,11 +16,12 @@ func Propose(args []string) error {
 	var bf baseFlags
 	bf.bind(fs)
 	var sqlFlag, file, note string
-	var noDryRun bool
+	var noDryRun, noTransaction bool
 	fs.StringVar(&sqlFlag, "sql", "", "inline SQL")
 	fs.StringVar(&file, "f", "", "read SQL from file")
 	fs.StringVar(&note, "note", "", "human-readable justification")
 	fs.BoolVar(&noDryRun, "no-dry-run", false, "skip EXPLAIN dry-run (still validates config + driver)")
+	fs.BoolVar(&noTransaction, "no-transaction", false, "apply without a transaction; skips EXPLAIN and cannot roll back")
 	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
@@ -45,18 +46,15 @@ func Propose(args []string) error {
 	defer closeDB()
 
 	p := proposal.Proposal{
-		DB:     alias,
-		Driver: dbc.Driver,
-		SQL:    q,
-		Note:   note,
+		DB:            alias,
+		Driver:        dbc.Driver,
+		SQL:           q,
+		Note:          note,
+		NoTransaction: noTransaction,
 	}
 
-	if !noDryRun {
-		if dr, err := doDryRun(context.Background(), db, drv, q); err == nil {
-			p.DryRun = dr
-		} else {
-			p.DryRun = &proposal.DryRun{Explain: "dry-run failed: " + err.Error()}
-		}
+	if noTransaction || !noDryRun {
+		p.DryRun = proposalDryRun(context.Background(), db, drv, q, noTransaction)
 	}
 
 	store, err := proposal.Open()
@@ -69,9 +67,24 @@ func Propose(args []string) error {
 	}
 
 	fmt.Printf("proposal %s created.\n", id)
+	if noTransaction {
+		fmt.Println("mode: no transaction; SQL has not been validated and apply cannot roll back")
+	}
 	fmt.Printf("next: run `sudo cosql apply %s` in a terminal you control.\n", id)
 	fmt.Printf("inspect: `cosql proposal show %s`\n", id)
 	return nil
+}
+
+func proposalDryRun(ctx context.Context, db *sql.DB, drv driver.Driver, q string, noTransaction bool) *proposal.DryRun {
+	if noTransaction {
+		// 无只读事务保护时不发送任意 SQL，避免试跑产生真实变更。
+		return &proposal.DryRun{Explain: "dry-run skipped: no-transaction mode; SQL has not been validated"}
+	}
+	dr, err := doDryRun(ctx, db, drv, q)
+	if err != nil {
+		return &proposal.DryRun{Explain: "dry-run failed: " + err.Error()}
+	}
+	return dr
 }
 
 func doDryRun(ctx context.Context, db *sql.DB, drv driver.Driver, q string) (*proposal.DryRun, error) {

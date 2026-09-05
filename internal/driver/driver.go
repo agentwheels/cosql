@@ -19,6 +19,7 @@ type Driver interface {
 	Kind() string // "postgres" or "mysql"
 	ListObjects(ctx context.Context, db *sql.DB) ([]SchemaRow, error)
 	DescribeTable(ctx context.Context, db *sql.DB, table string) (*TableInfo, error)
+	ShowCreateTable(ctx context.Context, db *sql.DB, table string) (string, error)
 	// ExplainSQL wraps a user query into an EXPLAIN that returns rows.
 	ExplainSQL(sql string, analyze bool) string
 }

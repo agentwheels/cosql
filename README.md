@@ -69,6 +69,8 @@ sudo cosql apply <proposal-id>
 
 本选项只解决执行时的事务兼容问题，不保证所有 MySQL SQL 或 `information_schema` 查询都能用于 Lindorm。它不修改数据库别名、连接凭证或 sudo 审批方式。
 
+查看 MySQL / Lindorm 表的完整定义时，使用 `cosql schema <db> <table> --ddl`，需要 JSON 输出时加 `--json`。该命令只执行固定的只读查询 `SHOW CREATE TABLE`，会转义表名，不开启事务，也不执行建表 SQL。可用它核对 `information_schema` 未返回的主键和 TTL。PostgreSQL 不支持此选项。
+
 ## Config
 
 See [`examples/config.toml`](examples/config.toml). Each DB is a

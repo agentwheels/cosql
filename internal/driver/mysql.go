@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,7 +12,24 @@ import (
 type mysqlDriver struct{ dsn string }
 
 func (m *mysqlDriver) Open() (*sql.DB, error) { return sql.Open("mysql", m.dsn) }
-func (m *mysqlDriver) Kind() string            { return "mysql" }
+func (m *mysqlDriver) Kind() string           { return "mysql" }
+
+func (m *mysqlDriver) ShowCreateTable(ctx context.Context, db *sql.DB, table string) (string, error) {
+	schema, name := splitSchema(table, "")
+	if name == "" {
+		return "", fmt.Errorf("table name is required")
+	}
+	quote := func(s string) string { return "`" + strings.ReplaceAll(s, "`", "``") + "`" }
+	identifier := quote(name)
+	if schema != "" {
+		identifier = quote(schema) + "." + identifier
+	}
+	var tableName, ddl string
+	if err := db.QueryRowContext(ctx, "SHOW CREATE TABLE "+identifier).Scan(&tableName, &ddl); err != nil {
+		return "", err
+	}
+	return ddl, nil
+}
 
 func (m *mysqlDriver) ExplainSQL(q string, analyze bool) string {
 	if analyze {

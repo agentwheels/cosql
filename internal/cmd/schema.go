@@ -16,6 +16,8 @@ func Schema(args []string) error {
 	fs := newFlagSet("schema")
 	var bf baseFlags
 	bf.bind(fs)
+	var ddl bool
+	fs.BoolVar(&ddl, "ddl", false, "show MySQL/Lindorm CREATE TABLE definition (read-only)")
 	if err := parseMixed(fs, args); err != nil {
 		return err
 	}
@@ -27,6 +29,9 @@ func Schema(args []string) error {
 	if fs.NArg() >= 2 {
 		table = fs.Arg(1)
 	}
+	if ddl && table == "" {
+		return fmt.Errorf("schema --ddl requires a table name")
+	}
 
 	db, drv, _, closeDB, err := openDB(bf.ConfigPath, alias)
 	if err != nil {
@@ -35,6 +40,17 @@ func Schema(args []string) error {
 	defer closeDB()
 
 	ctx := context.Background()
+	if ddl {
+		definition, err := drv.ShowCreateTable(ctx, db, table)
+		if err != nil {
+			return err
+		}
+		if bf.JSON {
+			return outputJSON(map[string]string{"ddl": definition})
+		}
+		fmt.Fprintln(os.Stdout, definition)
+		return nil
+	}
 
 	if table == "" {
 		objs, err := drv.ListObjects(ctx, db)

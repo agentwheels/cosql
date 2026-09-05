@@ -19,7 +19,7 @@ const usage = `cosql - database ops CLI for PostgreSQL and MySQL
 Commands:
   list                               List configured databases
   query   <db>   [--sql ... | -f F]  Run a read-only SQL query
-  schema  <db>   [<table>]           List schemas/tables or describe one table
+  schema  <db>   [<table>] [--ddl]   Describe a table or show its MySQL/Lindorm DDL
   explain <db>   [--sql ... | -f F]  Show query execution plan (read-only)
   propose <db>   [--sql ... | -f F]  Create a write proposal (agents use this)
                  [--note "..."] [--no-transaction]

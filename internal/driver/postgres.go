@@ -11,7 +11,11 @@ import (
 type postgres struct{ dsn string }
 
 func (p *postgres) Open() (*sql.DB, error) { return sql.Open("pgx", p.dsn) }
-func (p *postgres) Kind() string            { return "postgres" }
+func (p *postgres) Kind() string           { return "postgres" }
+
+func (p *postgres) ShowCreateTable(context.Context, *sql.DB, string) (string, error) {
+	return "", fmt.Errorf("schema --ddl is unsupported for postgres; use schema without --ddl")
+}
 
 func (p *postgres) ExplainSQL(q string, analyze bool) string {
 	if analyze {

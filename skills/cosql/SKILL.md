@@ -39,6 +39,7 @@ echo "select 1"   | cosql query <db>          # implicit stdin (same thing)
 # Schema browsing
 cosql schema  <db>                      # list schemas/tables with rough row counts
 cosql schema  <db> public.users         # columns + indexes + foreign keys
+cosql schema  <db> default.users --ddl  # MySQL / Lindorm SHOW CREATE TABLE
 
 # EXPLAIN. --analyze executes the query and is still bounded by the read-only txn.
 cosql explain <db> --sql "..."
